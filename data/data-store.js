@@ -7,46 +7,46 @@ import EnumDataBlock from "./enum-data-block.js";
 /**
  * @static
  */
-export default class DataStore {
+export default class Storehouse {
     constructor() {throw new ReferenceError('reference to undeclared variable "DataStore"')}
     
     /** @type {Map<String, DataBlock>} */
     static storage = new Map()
 
     static registerProvider(key, startingValue = 0) {
-        DataStore.storage.set(key, new DataBlock(startingValue))
+        Storehouse.storage.set(key, new DataBlock(startingValue))
         return [
             (value) => {
-                DataStore.storage.get(key).setValue(value);
+                Storehouse.storage.get(key).setValue(value);
             },
-            () => DataStore.storage.get(key)
+            () => Storehouse.storage.get(key)
         ]
     }
 
     static registerArrayProvider(key, startingValue = []) {
-        DataStore.storage.set(key, new ArrayDataBlock(startingValue));
+        Storehouse.storage.set(key, new ArrayDataBlock(startingValue));
         return [
             (index, value) => {
-                DataStore.storage.get(key).setValueAtIndex(index, value)
+                Storehouse.storage.get(key).setValueAtIndex(index, value)
             },
-            () => DataStore.storage.get(key).value
+            () => Storehouse.storage.get(key).value
         ]
     }
     static registerEnumProvider(key, allowedValues, startingValue = allowedValues[0]) {
-        DataStore.storage.set(key, new EnumDataBlock(allowedValues, startingValue))
+        Storehouse.storage.set(key, new EnumDataBlock(allowedValues, startingValue))
         return [
-            (value) => DataStore.storage.get(key).setValue(value),
-            () => DataStore.storage.get(key).value
+            (value) => Storehouse.storage.get(key).setValue(value),
+            () => Storehouse.storage.get(key).value
         ]
     }
     static registerSubscriber(key, callback) {
-        return DataStore.storage.get(key).subscribe(callback);
+        return Storehouse.storage.get(key).subscribe(callback);
     }
     static registerAggregateSubscriber(key, callback, aggregator = sum) {
-        const block = DataStore.storage.get(key)
+        const block = Storehouse.storage.get(key)
         return block.subscribeAggregate(callback, aggregator);
     }
     static hasProvider(key) {
-        return DataStore.storage.has(key);
+        return Storehouse.storage.has(key);
     }
 }
