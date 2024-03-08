@@ -1,1 +1,1 @@
-export { default as Storehouse } from './data/data-store.js'
+export { default as Storehouse } from './data/storehouse.js'
