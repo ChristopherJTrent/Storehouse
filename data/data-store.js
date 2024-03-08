@@ -46,6 +46,9 @@ export default class Storehouse {
         const block = Storehouse.storage.get(key)
         return block.subscribeAggregate(callback, aggregator);
     }
+    static forceUpdate(key) {
+        Storehouse.storage.get(key)?.alertSubscribers();
+    }
     static hasProvider(key) {
         return Storehouse.storage.has(key);
     }
