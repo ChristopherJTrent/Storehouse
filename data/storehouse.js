@@ -61,6 +61,40 @@ export default class Storehouse {
         ]
     }
     /**
+     * @template T
+     * @typedef combinatorDefinition
+     * @property {String} key the storage key of the provider
+     * @property {(val: T[]) => T | undefined} aggregator the aggregator to use if key refers to an array provider
+     */
+    /**
+     * @param {String} mainKey 
+     * @param {combinatorDefinition[]} defs 
+     * @param {(value: T[]) => T} combiner
+     * @throws {TypeError} if key refers to an array provider and aggregator is undefined.
+     * @throws {TypeError} if you attempt to register a combinator on an enum provider (Unsupported Operation)
+     */
+    static registerCombinatorProvider(mainKey, defs, combiner) {
+        const [set, get] = Storehouse.registerArrayProvider(mainKey, Array(defs.length).fill(0))
+        for (let i = 0; i < defs.length; i++) {
+            const def = defs[i];
+            if (Storehouse.getProviderType(def.key) === 'array' && !def.aggregator) {
+                throw new TypeError(`aggregator for array provider "${def.key}" must be provided.`);
+            }
+            switch (Storehouse.getProviderType(def.key)) {
+                case 'enum' :
+                    throw new TypeError(`Unsupported Operation: Enum Providers cannot be combined. (${def.key})`)
+                case 'array':
+                    Storehouse.registerAggregateSubscriber(def.key, (v) =>  {
+                        set(i, v)
+                    }, def.aggregator)
+                    break;
+                default:
+                    Storehouse.registerSubscriber(def.key, (v) => set(i, v))
+                    break;
+            }
+        }
+    }
+    /**
      * registers a subscriber to a given provider
      * @template T
      * @param {String} key the name of the provider
@@ -93,5 +127,20 @@ export default class Storehouse {
      */
     static hasProvider(key) {
         return Storehouse.storage.has(key);
+    }
+
+    /**
+     * gets the type of a given data provider.
+     * @param {String} key
+     * @returns {'standard'|'array'|'enum'} 
+     */
+    static getProviderType(key) {
+        if (Array.isArray(Storehouse.storage.get(key).value)){
+            return 'array'
+        } else if (Storehouse.storage.get(key)?.allowedValues) {
+            return 'enum'
+        } else {
+            return 'standard'
+        }
     }
 }

@@ -11,9 +11,22 @@ export default  class ArrayDataBlock extends DataBlock {
         super();
         this.value = value;
         this.subscribers = [];
+        this.defaultAggregation = sum
+    }
+    /**
+     * sets the default aggregation function that will be used if an aggregate subscriber doesn't specify one.
+     * @param {(value: T[]) => T} aggregator
+     */
+    setDefaultAggregation(aggregator) {
+        this.defaultAggregation = aggregator;
+        return this;
     }
 
     setValueAtIndex(index, value) {
+        if (index > this.value.length - 1) {
+            const difference = index - this.value.length
+            this.value = this.value.concat(Array(difference).fill(0))
+        }
         this.value[index] = value;
         this.alertSubscribers();
     }
