@@ -2,6 +2,7 @@ import { sum } from "./aggregators.js";
 import DataBlock from "./data-block.js";
 /** @template T */
 export default  class ArrayDataBlock extends DataBlock {
+    static DEFAULT_AGGREGATOR = sum
 
     /**
      * 

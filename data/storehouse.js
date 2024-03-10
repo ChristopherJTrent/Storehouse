@@ -77,9 +77,6 @@ export default class Storehouse {
         const [set, get] = Storehouse.registerArrayProvider(mainKey, Array(defs.length).fill(0))
         for (let i = 0; i < defs.length; i++) {
             const def = defs[i];
-            if (Storehouse.getProviderType(def.key) === 'array' && !def.aggregator) {
-                throw new TypeError(`aggregator for array provider "${def.key}" must be provided.`);
-            }
             switch (Storehouse.getProviderType(def.key)) {
                 case 'enum' :
                     throw new TypeError(`Unsupported Operation: Enum Providers cannot be combined. (${def.key})`)
@@ -93,6 +90,7 @@ export default class Storehouse {
                     break;
             }
         }
+        Storehouse.storage.get(mainKey).setDefaultAggregation(combiner)
     }
     /**
      * registers a subscriber to a given provider
