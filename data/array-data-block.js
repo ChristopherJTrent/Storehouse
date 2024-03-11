@@ -12,6 +12,7 @@ export default  class ArrayDataBlock extends DataBlock {
         super();
         this.value = value;
         this.subscribers = [];
+        /** @type {(value: T[]) => T} */
         this.defaultAggregation = sum
     }
     /**
@@ -46,7 +47,7 @@ export default  class ArrayDataBlock extends DataBlock {
      * @param {aggregator} aggregator a function that accepts an array and returns a single value
      * @returns {undefined}
      */
-    subscribeAggregate(callback, aggregator = sum) {
+    subscribeAggregate(callback, aggregator = this.defaultAggregation) {
         this.subscribe(() => {callback(aggregator(this.value));})
     }
 
