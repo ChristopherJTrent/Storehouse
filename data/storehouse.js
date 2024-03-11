@@ -99,7 +99,7 @@ export default class Storehouse {
      * @param {(value: T) => undefined} callback 
      */
     static registerSubscriber(key, callback) {
-        Storehouse.storage.get(key).subscribe(callback);
+        Storehouse.storage.get(key)?.subscribe(callback);
     }
     /**
      * registers a subscriber to a given aggregate provider
@@ -133,7 +133,7 @@ export default class Storehouse {
      * @returns {'standard'|'array'|'enum'} 
      */
     static getProviderType(key) {
-        if (Array.isArray(Storehouse.storage.get(key).value)){
+        if (Array.isArray(Storehouse.storage.get(key)?.value)){
             return 'array'
         } else if (Storehouse.storage.get(key)?.allowedValues) {
             return 'enum'
