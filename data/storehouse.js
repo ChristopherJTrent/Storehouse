@@ -108,7 +108,7 @@ export default class Storehouse {
      * @param {(value: T) => undefined} callback a function that will handle the value 
      * @param {(list: T[]) => T} aggregator a function that aggregates an array of values into a single value
      */
-    static registerAggregateSubscriber(key, callback, aggregator = sum) {
+    static registerAggregateSubscriber(key, callback, aggregator) {
         Storehouse.storage.get(key).subscribeAggregate(callback, aggregator);
     } 
     /**
