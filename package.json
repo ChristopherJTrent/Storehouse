@@ -13,5 +13,6 @@
   "devDependencies": {
     "jasmine": "^5.1.0",
     "jasmine-spec-reporter": "^7.0.0"
-  }
+  },
+  "exports": "./index.mjs"
 }
