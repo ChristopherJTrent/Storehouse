@@ -1,5 +1,4 @@
 import {default as DataBlock} from '../data/data-block.js'
-console.log('tests are actually being run')
 describe('DataBlock', () => {
     describe('When Constructed: ', () => {
         let d;
