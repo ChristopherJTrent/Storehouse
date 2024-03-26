@@ -4,5 +4,5 @@
  * @returns {Number}
  */
 export function sum(arr) {
-    return arr.reduce((prev, curr) => prev + curr, 0)
+	return arr.reduce((prev, curr) => prev + curr, 0)
 }
