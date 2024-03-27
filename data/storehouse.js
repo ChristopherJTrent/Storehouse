@@ -67,9 +67,8 @@ export default class Storehouse {
      */
 	/**
      * @param {String} mainKey 
-     * @param {combinatorDefinition[]} defs 
+     * @param {{key: String, aggregator: ((val: T[]) => T)?}[]} defs 
      * @param {(value: T[]) => T} combiner
-     * @throws {TypeError} if key refers to an array provider and aggregator is undefined.
      * @throws {TypeError} if you attempt to register a combinator on an enum provider (Unsupported Operation)
      */
 	static registerCombinatorProvider(mainKey, defs, combiner) {
